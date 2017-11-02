@@ -1,0 +1,32 @@
+ASSIGNMENT SET – 2 (INTEGER ARRAYS) - (BatchA)
+
+Write a program to check whether a system is little endian or big endian.
+
+Hint : For little endian lower-order byte of the data is stored in memory at the lowest address and for big endian higher-order byte is stored at lowest address
+
+Write a program to read two 16 bit numbers add them and print also.
+
+Write a program to read two 32 bit numbers add them and print the result.
+
+Write a program to search for a number in an array of numbers using linear search
+Write a program to input 10 numbers into an array and find the second smallest among them
+
+Write a program to sort an array of numbers in ascending order ( size = 2 bytes each) using bubble sort / selection sort / insertion sort.
+
+
+ASSIGNMENT SET – 2 (INTEGER ARRAYS) (Batch B)
+
+
+
+Write a program to find GCD of two numbers using Euclid’s algorithm(non recursive version)
+
+Write a program to read two 16 bit numbers add them and print also.
+
+Write a program to read two 32 bit numbers add them and print the result.
+
+Write a program to search for a number in an array of numbers using binary search?
+
+Write a program to accept 10 numbers into an array and find the second largest number among them?
+
+Write a program to sort an array of numbers in descending order(size = 2 bytes each) using bubble sort / selection sort / insertion sort.
+

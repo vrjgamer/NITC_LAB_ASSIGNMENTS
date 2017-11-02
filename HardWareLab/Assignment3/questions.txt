@@ -1,0 +1,17 @@
+Batch A
+
+Program to Remove all Characters in a String except alphabet
+Write a program to remove duplicates from string given " bananas " Return "bans
+Program to Concatenate two Strings Lexically
+Eg: Enter a string : hello this
+Enter another string to concat : is sanfoundry
+Ans: hello is sanfoundry this
+Write a program to read a string and two other stings. Replace all the occurrence of the second string in the first string with the third string.
+
+
+Batch B
+
+Write a program to remove all spaces from a string
+Write a program to count the occurrence of a word in a string
+Write a program to read a sentence add ‘an’ in front of all the vowel words.
+Program to Sort Elements in Lexicographical Order (Dictionary Order).
