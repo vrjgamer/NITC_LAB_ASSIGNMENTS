@@ -1,0 +1,32 @@
+
+{
+	Name: vrushabh  jambhulkar
+	Sex: Male
+	Address: room 146
+	DOB: 1/1/1996
+	SSN: 151514135
+}
+
+{
+	Name: ashiq  M
+	Sex: Male
+	Address: room 146
+	DOB: 1/1/1996
+	SSN: 151514135
+}
+
+{
+	Name: dsasdas dasdasd Masdasd
+	Sex: Female
+	Address: room 145
+	DOB: 2/9/1687
+	SSN: 68541541
+}
+
+{
+	Name:   
+	Sex: Male
+	Address: 
+	DOB: 
+	SSN: 123
+}
