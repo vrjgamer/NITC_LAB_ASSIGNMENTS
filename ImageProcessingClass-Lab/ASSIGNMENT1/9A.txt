@@ -1,0 +1,1 @@
+As the Sigma value changes the intensity of dark areas decreases as the internsity values are getting quantized.

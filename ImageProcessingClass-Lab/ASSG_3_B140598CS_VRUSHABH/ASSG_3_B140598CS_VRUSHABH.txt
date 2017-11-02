@@ -1,0 +1,150 @@
+getSubMatrix(buf){
+	for i in [0, 16):
+		for j in [0, 16):
+			buf[i, j] = buf[i, j] - 127
+	return buf
+}
+
+alphafunc(n){
+	if n == 0 :
+		return 0.2500
+	else:
+		return 0.3535
+}
+
+DCTValue(buf, u , v){
+	let sum = 0
+	let alphau = alphafunc(u)
+	let alphav = alphafunc(v)
+	for x in [0, 16):
+		for y in [0, 16):
+			sum = sum + (buf[x,y] * (cos((pi*u/8)*(x + 0.5))) * (cos((pi*v/8)*(y + 0.5))))
+	return alphau * alphav * sum
+}
+
+
+quantize =[[16,11,10,16,24,40,51,61],
+			[12,12,14,19,26,58,60,55],
+			[14,13,16,24,40,57,69,56],
+			[14,17,22,29,51,87,80,62],
+			[18,22,37,56,68,109,103,77],
+			[24,35,55,64,81,104,113,92],
+			[49,64,78,87,103,121,120,101],
+			[72,92,95,98,112,100,103,99]]
+			
+threshold = 1
+
+getQuantizedValue(r, i, j){
+	let x = i%8
+	let y = j%8
+	return round(r/quantize[x,y] * threshold)
+}
+
+getDCTMatrix(buf){
+	for i in [0, 16)
+		for j in [0, 16)
+ 			buf[i, j] = getQuantizedValue(DCTValue(buf, i, j), i, j)
+	return buf
+}
+
+zigZag(inputArr){
+	let result = []
+	let rows = inputArr.shape[0]
+	let cols = inputArr.shape[1]
+	for sum in [0, (rows + cols - 1))
+		if(sum%2 == 0)
+			let i = min(sum, rows - 1)
+			let j = sum - i
+			while((i >= 0) and (j < cols))
+				result.append(inputArr[i, j])
+				i -= 1
+				j += 1
+		else
+			j = min(sum, cols - 1)
+			i = sum - j
+			while((j >= 0) and (i < rows)):
+				result.append(inputArr[i, j])
+				i += 1
+				j -= 1
+	return result
+}
+
+
+
+main(){
+
+//load image
+let im = IMG.open('images.jpeg')
+
+// get the first layer
+let im = im.split()[0]
+
+//convert image into array
+let image = np.array(im)
+
+//empty array
+let arr = []
+
+// creating window 
+let sx = 0
+let sy = 0
+let ex = 16
+let ey = 16
+
+while ex < im.size[0]:
+	while ey < im.size[1]
+	
+		//create buffer of 16x16 init with 0
+		buffer = array(16, 16) = {0}
+		buffer = buffer.astype(np.int64)
+		
+		for i in [0, 16)
+			for j in [0, 16)
+			
+				//putting value in buffer
+				buffer[i, j] = image[sx+i, sy+j]
+		
+		//changing window position
+		sy = ey
+		ey = ey + 16
+		if ey >= im.size[1]
+			ey = im.size[1]
+			
+		//get shift matrix 
+		buffer = getSubMatrix(buffer)
+		
+		//get dct matrix
+		buffer = getDCTMatrix(buffer)
+		
+		//get zigZag vector
+		d = zigZag(buffer)
+		
+		// add it to vector array
+		arr.append(d)
+		
+	-end-while-
+	
+	//changing window position
+	sx = ex
+	ex = ex + 16
+	if ex >= im.size[0]
+		ex = im.size[0]
+	sy = 0
+	ey = 16
+}
+
+
+Steps in Image Compression:
+
+1) load image
+2) divide image into 16x16 matrix and process each of them
+3) take one buffer at a time, 
+4) shift each intensity value in the buffer by subtracting 127
+5) find the DCT value for each intensity value using quantization matrix 
+6) convert the buffer to a 1x256 vector by traversing in a zigZag pattern.
+7) append the vector to the vector array
+8) repeat from step 2 till no more buffers can be processed
+9) array of vector is the compresses image	
+
+
+

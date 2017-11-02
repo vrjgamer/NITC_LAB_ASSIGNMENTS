@@ -1,0 +1,1 @@
+minimum value of pixel is 7maximum value of pixel is 253

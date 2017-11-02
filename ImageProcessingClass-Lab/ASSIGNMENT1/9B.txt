@@ -1,0 +1,1 @@
+As the value of sigma increases, image gets more and more enhanced.

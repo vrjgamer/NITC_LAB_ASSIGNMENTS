@@ -1,0 +1,1 @@
+As the value of the threshold increases in the quantization part, the image intensities becomes more even.
