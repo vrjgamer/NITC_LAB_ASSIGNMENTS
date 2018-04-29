@@ -1,0 +1,61 @@
+#include "TM4C123.h"// Device header
+
+void timer0A_delayMs(int ttime);
+
+int main(void){
+    volatile int result;
+
+    /* enable clocks */
+    SYSCTL->RCGCGPIO |= 0x30;   /* enable clock to GPIOE (AIN0 is on PE3)  + enable clock to GPIOF at clock gating control register */ 
+    SYSCTL->RCGCADC |= 1;       /* enable clock to ADC0 */
+    /* initialize PE3 for AIN0 input  */
+    GPIOE->AFSEL |= 8;       /* enable alternate function */
+    GPIOE->DEN &= ~8;        /* disable digital function */
+    GPIOE->AMSEL |= 8;       /* enable analog function */
+	
+    /* initialize ADC0 */
+    ADC0->ACTSS &= ~8;        /* disable SS3 during configuration */
+    ADC0->EMUX &= ~0xF000;    /* software trigger conversion */
+    ADC0->SSMUX3 = 0;         /* get input from channel 0 */
+    ADC0->SSCTL3 |= 6;        /* take one sample at a time, set flag at 1st sample */
+    ADC0->ACTSS |= 8;         /* enable ADC0 sequencer 3 */
+
+		//init GPIO
+    /* enable the GPIO pins for the LED (PF3, 2 1) as output */
+    GPIOF->DIR = 0x0E;
+    /* enable the GPIO pins for digital function */
+    GPIOF->DEN = 0x0E;
+		
+		while(1)
+    {
+			GPIOF->DATA = 0;        /* turn all LED */
+			ADC0->PSSI |= 8;        /* start a conversion sequence 3 */
+      while((ADC0->RIS & 8) == 0);   /* wait for conversion complete */
+      result = ADC0->SSFIFO3; /* read conversion result */
+      ADC0->ISC = 8;  
+			if(result < 20){
+				GPIOF->DATA = 2;        /* turn on green LED */
+			}else{
+				GPIOF->DATA = 8;        /* turn on red LED */
+			}
+      timer0A_delayMs(100);   /* TimerA 100 msec delay */
+    }
+}
+
+/* multiple of millisecond delay using periodic mode */
+void timer0A_delayMs(int ttime){
+    int i;
+    SYSCTL->RCGCTIMER |= 1;     /* enable clock to Timer Block 0 */
+ 
+    TIMER0->CTL = 0;            /* disable Timer before initialization */
+    TIMER0->CFG = 0x04;         /* 16-bit option */
+    TIMER0->TAMR = 0x02;        /* periodic mode and down-counter */
+    TIMER0->TAILR = 16000 - 1;  /* Timer A interval load value register */
+    TIMER0->ICR = 0x1;          /* clear the TimerA timeout flag*/
+    TIMER0->CTL |= 0x01;        /* enable Timer A after initialization */
+ 
+    for(i = 0; i < ttime; i++) { 
+			while ((TIMER0->RIS & 0x1) == 0);      /* wait for TimerA timeout flag */
+      TIMER0->ICR = 0x1;      /* clear the TimerA timeout flag */
+    }
+}
